@@ -1,7 +1,13 @@
 # PicoJSON - a C++ JSON parser / serializer
 
 Copyright &copy; 2009-2010 Cybozu Labs, Inc.
-Copyright &copy; 2011 Kazuho Oku
+Copyright &copy; 2011-2014 Kazuho Oku
+
+Licensed under [2-clause BSD license](http://opensource.org/licenses/BSD-2-Clause)
+
+## Version
+
+1.1.2-dev [![Build Status](https://travis-ci.org/kazuho/picojson.svg?branch=master)](https://travis-ci.org/kazuho/picojson)
 
 ## Introduction
 
@@ -11,7 +17,6 @@ PicoJSON is a tiny JSON parser / serializer for C++ with following properties:
 - no external dependencies (only uses standard C++ libraries)
 - STL-frendly (arrays are represented by using std::vector, objects are std::map)
 - provides both pull interface and streaming (event-based) interface
-- licensed under the new BSD License
 
 ## Reading JSON using the pull interface
 
@@ -160,6 +165,19 @@ picojson::value v;
 v.serialize(std::ostream_iterator(std::cout));
 </pre>
 
+## Experimental support for int64_t
+
+Experimental suport for int64_t becomes available if the code is compiled with preprocessor macro `PICOJSON_USE_INT64`.
+
+Turning on the feature will cause following changes to picojson:
+- new constructor `picojson::value(int64_t)` is defined
+- `is<int64_t>()` and `get<int64_t>()` become available
+- numerics in JSON within the bounds of int64_t and not using `.` nor `e`/`E` are considered as int64 type
+ - the values are also avaliable as `double`s as well (i.e. all values which are `.is<int64_t>() == true` are also `.is<double>() == true`)
+- int64 values are converted to double once `get<double>()` is called
+
+Enabling the feature should not cause compatibility problem with code that do not use the feature.
+
 ## Further reading
 
-Examples can be found in the <i>examples</i> directory.
+Examples can be found in the <i>examples</i> directory, and on the [Wiki](https://github.com/kazuho/picojson/wiki).  Please add your favorite examples to the Wiki.
